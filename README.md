@@ -72,9 +72,14 @@ q: Term = x → x x
 q2: Term = (x → x x) (x → x x)
 ```
 
+## Evaluation
+
 To evaluate terms, use the postfix operators `!` (for just one evaluation step) and `!!` ("full evaluation", making all possible evaluation steps).
+
 The "full evaluation" will try to detect an infinite loop in evaluation. If it detects that the next evaluation step contains the previous step as a sub-term, an exception is thrown.
-The operator `!?` is the same as `!!` but returns an `Option[Term]`. It will return `None` if divergence was detected.
+This divergence detection mechanism is primitive and only good for illustrative purposes.
+
+The operator `!?` is the same as `!!` but returns an `Option[Term]`. It will return `None` if divergence was detected. The operator `!!` is defined as `!?` with the following `.get`.
 
 For example, the term `q2` defined above is evaluated to itself after one step:
 
@@ -110,3 +115,8 @@ This is detected as a divergence. Evaluating with `!?` will return `None`, while
 res7: Option[Term] = None
 ```
 
+## Library
+
+The file `lc0.sc` defines only the basic machinery of lambda calculus.
+
+The file `lc1.sc` defines the standard combinators (`cS`, `cK`, `cI`) including the Y-combinator (`cY`), Booleans (`bFalse`, `bTrue`), Church numbers (`cZero`, `cSucc`, `cOne`, ...), product and co-product types (`tPair`, `tCase`), and their associated operations.
