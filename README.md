@@ -4,7 +4,7 @@ This is a simple untyped lambda calculus interpreter in Scala using Ammonite She
 Use for pedagogical purposes only, because the code is not performance-optimized!
 Especially slow is the test of summation of Church numbers using recursion and the Y-combinator.
 
-The interpreter uses the "lazy" evaluation strategy.
+The interpreter uses the "lazy" evaluation strategy. Tests include a recursive summation function for Church numbers.
 
 # Prerequisites
 
