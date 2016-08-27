@@ -125,5 +125,5 @@ The file `lc0.sc` defines only the basic machinery of lambda calculus.
 
 The file `lc1.sc` defines the standard combinators (`cS`, `cK`, `cI`) including the Y-combinator (`cY`), 
 Booleans (`bFalse`, `bTrue`), Church numbers (`cZero`, `cSucc`, `cOne`, ...),
-Cartesian product and co-product types (`tPair`, `tCase`), and their associated operations:
+Cartesian product and co-product types (`tPair`, `tCase`), and their associated operations.
 
