@@ -61,3 +61,6 @@ val tCase = 's -: 'f -: 'g -: 's('f)('g)
 // Y-combinator
 
 val cY = 'f -: ('x -: 'f('x('x)))('x -: 'f('x('x)))
+
+
+true // avoid error when running this script by itself

@@ -1,6 +1,8 @@
 # scala-lambda-calculus
 This is a simple untyped lambda calculus interpreter in Scala using Ammonite Shell.
-Use for pedagogical purposes only. (Not performance-optimized!)
+
+Use for pedagogical purposes only, because the code is not performance-optimized!
+Especially slow is the test of summation of Church numbers using recursion and the Y-combinator.
 
 The interpreter uses the "lazy" evaluation strategy.
 
@@ -20,8 +22,8 @@ sudo curl -L -o /usr/local/bin/amm https://git.io/vKSOR && sudo chmod +x /usr/lo
 # Run tests
 
 ```
-amm lc0.sc
-amm lc1.sc
+amm lc0_spec.sc
+amm lc1_spec.sc
 ```
 
 There should be no errors (and no test output).
@@ -36,13 +38,15 @@ amm
 
 The Ammonite prompt usually ends with `@` (although it can be customized).
 
-Import the lambda calculus script:
+Import the basic lambda calculus script:
 
 ```
 import $file.lc0, lc0._
 ```
 
 Now you can use lambda calculus terms.
+
+If you want to use the "standard library" (Booleans, Church numbers, product and sum types, and the Y-combinator), import `lc1.sc` in the same way.
 
 ## Syntax of lambda-terms
 
@@ -119,4 +123,7 @@ res7: Option[Term] = None
 
 The file `lc0.sc` defines only the basic machinery of lambda calculus.
 
-The file `lc1.sc` defines the standard combinators (`cS`, `cK`, `cI`) including the Y-combinator (`cY`), Booleans (`bFalse`, `bTrue`), Church numbers (`cZero`, `cSucc`, `cOne`, ...), product and co-product types (`tPair`, `tCase`), and their associated operations.
+The file `lc1.sc` defines the standard combinators (`cS`, `cK`, `cI`) including the Y-combinator (`cY`), 
+Booleans (`bFalse`, `bTrue`), Church numbers (`cZero`, `cSucc`, `cOne`, ...),
+Cartesian product and co-product types (`tPair`, `tCase`), and their associated operations:
+

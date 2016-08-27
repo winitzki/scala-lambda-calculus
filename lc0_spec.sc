@@ -5,15 +5,16 @@ import scala.util.Try
 
 def checkE(a: Any, b: Any, m: String): Unit = assert(a == b, s"failed: $m: got $a vs $b")
 
-// deep equality up to alpha-conversions
+// Deep equality up to alpha-conversions.
 def checkA(a: Term, b: Term, m: String): Unit = assert(a === b, s"failed: $m: got $a vs $b")
 
-// deep equality up to multiple evaluations and alpha-conversions
+// Deep equality up to multiple evaluations and alpha-conversions.
 def checkM(a: Term, b: Term, m: String): Unit = {
 	assert((a!!) === (b!!), s"failed: $m: got $a evaluated to ${a!!} vs $b evaluated to ${b!!}")
 }
 
-// deep equality up to multiple evaluations on Church numbers
+// Deep equality up to multiple evaluations on Church numbers.
+// To test equality Church numbers, we need to supply two arguments to each number, or else nothing is evaluated under lambdas.
 def checkC(a: Term, b: Term, m: String): Unit = {
 	assert((a('x)('y)!!) === (b('x)('y)!!), s"failed: $m: got $a evaluated to ${a('x)('y)!!} vs $b evaluated to ${b('x)('y)!!}")
 }
@@ -26,7 +27,6 @@ checkE('a -: 'b('a) , Lam('a, Ap(Var('b), Var('a))), "lambda binds looser than a
 checkE('a('b)('c) , Ap(Ap(Var('a), Var('b)), Var('c)), "application is left-associative")
 
 // shallow equality
-
 checkA( 'a , 'a, "var is equal to itself")
 checkA( 'a -: 'a , 'a -: 'a, "lambda is equal to itself")
 checkA( 'a -: 'a , 'b -: 'b, "lambda is equal to itself up to alpha-conversion")
