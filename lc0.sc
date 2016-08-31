@@ -121,7 +121,21 @@ object Term {
 		}
 	}
 
-	def oneStepEval(t: Term): Term = evalLazyHeadFirst(t)
+	def oneStepEval(t: Term): Term = evalLazyHeadFirstThenArgs(t)
+
+	def evalLazyHeadFirstThenArgs(t: Term): Term = t match {
+		case Ap(a, b) => {
+			val newA = evalLazyHeadFirstThenArgs(a)
+			if (newA != a) Ap(newA, b)
+			else
+			// if we are here, we can't evaluate a to anything else
+			a match {
+				case Lam(x,e) => subst(e, x, b)
+				case _ => Ap(a, evalLazyHeadFirstThenArgs(b))	// can't evaluate t, so let's at least eval b
+			}
+		}
+		case _ => t // lambdas are not evaluated at all unless applied; free variables are never evaluated
+	}
 
 	def evalLazyHeadFirst(t: Term): Term = t match {
 		case Ap(a, b) => {
@@ -131,7 +145,7 @@ object Term {
 			// if we are here, we can't evaluate a to anything else
 			a match {
 				case Lam(x,e) => subst(e, x, b)
-				case _ => Ap(a, evalLazyHeadFirst(b))	// can't evaluate t, so let's at least eval b
+				case _ => t
 			}
 		}
 		case _ => t // lambdas are not evaluated at all unless applied; free variables are never evaluated
@@ -171,4 +185,4 @@ object Term {
 
 }
 
-true
+true // avoid error when running this script by itself

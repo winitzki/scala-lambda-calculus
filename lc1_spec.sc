@@ -67,8 +67,8 @@ checkE(churchToInt('x -: 'y -: 'y('x)), None, "x -> y -> y x is not a Church num
 
 checkE(churchToInt(cZero), Some(0), "c0 => 0")
 checkE(churchToInt(cOne), Some(1), "c1 => 1")
-checkE(churchToInt(cOne), Some(1), "c1 => 1")
 checkE(churchToInt(cTwo), Some(2), "c2 => 2")
+checkE(churchToInt(cThree), Some(3), "c3 => 3")
 checkE(churchToInt(cSix), Some(6), "c6 => 6")
 
 // sum type
@@ -94,3 +94,46 @@ checkC(cSum(cZero), cZero, "sum from 0 to 0 = 0")
 checkC(cSum(cOne), cOne, "sum from 0 to 1 = 1")
 checkC(cSum(cTwo), cThree, "sum from 0 to 2 = 3")
 checkC(cSum(cThree), cSix, "sum from 0 to 3 = 6")
+
+
+// Recursive function: factorial of a Church number
+
+checkC(cFact(cZero), cOne, "0! = 1")
+checkC(cFact(cOne), cOne, "1! = 1")
+// this is very slow!
+// checkC(cFact(cTwo), cTwo, "2! = 2")
+
+// this is extremely slow!
+// checkC(cFact(cThree), cSix, "3! = 6")
+
+
+// Recursive type: single-linked list of lambda-terms
+
+val lNil = tInl(cZero)
+val lCons = 'x -: 'l -: tInr(tPair('x)('l))
+val lIsEmpty = 'l -: tCase('l)(cK(bTrue))(cK(bFalse))
+val lHead = 'l -: tCase('l)(cK(cZero))(tFst)
+val lTail = 'l -: tCase('l)(cK(cZero))(tSnd)
+// "case" for lists: if l is empty then e else evaluate f on head and tail of l
+val lCase = 'l -: 'e -: 'f -: tCase('l)(cK('e))('p -: 'f(tFst('p))(tSnd('p)))
+
+val list0 = lNil
+val list1 = lCons('a)(lNil)
+val list2 = lCons('b)(lCons('a)(lNil))
+val list3 = lCons(cOne)(lCons(cOne)(lCons(cOne)(lNil)))
+
+checkM(lIsEmpty(list0), bTrue, "empty list is empty")
+checkM(lIsEmpty(list1), bFalse, "list [a] is not empty")
+checkM(lHead(list1), Var('a), "head of [a] is a")
+checkM(lTail(list2), list1, "tail of [b, a] is [a]")
+checkM(lCase(list0)(cTwo)('a), cTwo, "lCase of [] is correct")
+checkM(lCase(list1)(cTwo)('h -: 't -: 'h), 'a, "lCase of [a] head is correct")
+checkM(lCase(list1)(cTwo)('h -: 't -: 't), lNil, "lCase of [a] tail is correct")
+
+// Recursive function: compute length of list as Church numeral
+
+val lLen = cY( 'r -: 'l -: lCase('l)(cZero)('h -: 't -: cSucc('r('t))) )
+
+checkC(lLen(list0), cZero, "length of empty list is 0")
+checkC(lLen(list3), cThree, "length of [1,1,1] is 3")
+

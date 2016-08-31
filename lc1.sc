@@ -78,4 +78,9 @@ val tCase = 's -: 'f -: 'g -: 's('f)('g)
 val cY = 'f -: ('x -: 'f('x('x)))('x -: 'f('x('x)))
 
 
+// Recursive function: factorial of a Church number
+
+val cFact = cY( 'r -: 'n -: bIf(cIsZero('n))(cOne)( ('m -: bIf(cIsZero('m))(cOne)( cMul('n)('r('m)) ))(cPred('n)) ) )
+
+
 true // avoid error when running this script by itself

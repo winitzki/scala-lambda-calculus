@@ -3,20 +3,20 @@ import scala.util.Try
 
 // shallow (syntactic) equality
 
-def checkE(a: Any, b: Any, m: String): Unit = assert(a == b, s"failed: $m: got $a vs $b")
+def checkE(a: Any, b: Any, m: String): Unit = assert(a == b, s"failed: $m: got $a but expected $b")
 
 // Deep equality up to alpha-conversions.
-def checkA(a: Term, b: Term, m: String): Unit = assert(a === b, s"failed: $m: got $a vs $b")
+def checkA(a: Term, b: Term, m: String): Unit = assert(a === b, s"failed: $m: got $a but expected $b")
 
 // Deep equality up to multiple evaluations and alpha-conversions.
 def checkM(a: Term, b: Term, m: String): Unit = {
-	assert((a!!) === (b!!), s"failed: $m: got $a evaluated to ${a!!} vs $b evaluated to ${b!!}")
+	assert((a!!) === (b!!), s"failed: $m: got ${a!!} but expected ${b!!}")
 }
 
 // Deep equality up to multiple evaluations on Church numbers.
 // To test equality Church numbers, we need to supply two arguments to each number, or else nothing is evaluated under lambdas.
 def checkC(a: Term, b: Term, m: String): Unit = {
-	assert((a('x)('y)!!) === (b('x)('y)!!), s"failed: $m: got $a evaluated to ${a('x)('y)!!} vs $b evaluated to ${b('x)('y)!!}")
+	assert((a('x)('y)!!) === (b('x)('y)!!), s"failed: $m: got ${a('x)('y)!!} but expected ${b('x)('y)!!}")
 }
 
 // basic syntax

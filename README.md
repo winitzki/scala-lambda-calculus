@@ -2,9 +2,10 @@
 This is a simple untyped lambda calculus interpreter in Scala using Ammonite Shell.
 
 Use for pedagogical purposes only, because the code is not performance-optimized!
-Especially slow is the test of summation of Church numbers using recursion and the Y-combinator.
+Especially slow is the test of summation and factorials of Church numbers using recursion and the Y-combinator.
 
-The interpreter uses the "lazy" evaluation strategy (an "eager" strategy is included in the code but not active).
+The interpreter uses the "lazy" evaluation strategy, with additional evaluation of arguments if function heads cannot be evaluated further.
+A fully "lazy" and an "eager" strategies are included in the code but not active.
 
 # Prerequisites
 
@@ -119,7 +120,7 @@ This is detected as a divergence. Evaluating with `!?` will return `None`, while
 res7: Option[Term] = None
 ```
 
-## Library
+## Standard library
 
 The file `lc0.sc` defines only the basic machinery of lambda calculus.
 
