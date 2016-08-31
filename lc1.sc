@@ -48,10 +48,25 @@ val tSnd = 'p -: 'p(bFalse)
 val cNextPair = 'p -: tPair(cSucc(tFst('p)))(tFst('p))
 val cPred = 'c -: tSnd('c(cNextPair)(tPair(cZero)(cZero)))
 
+// subtraction
+
+val cSub = 'm -: 'n -: 'n(cPred)('m)
+
 // arithmetic inequalities
 
 val cIsZero = 'c -: 'c(bFalse)(bNot)(bFalse)
 val cIsGeq = 'n -: 'm -: cIsZero('n(cPred)('m))
+
+// convert Church numerals to Int
+
+def churchToInt(c: Term): Option[Int] = c match {
+	case Lam(x,Lam(y,e)) => e match {
+		case Var(`y`) => Some(0)
+		case Ap(Var(`x`), f) => churchToInt(Lam(x,Lam(y,f))).map(_ + 1)
+		case _ => None
+	}
+	case _ => None
+}
 
 // disjoint union type
 val tInl =  'x -: 'f -: 'g -: 'f('x)

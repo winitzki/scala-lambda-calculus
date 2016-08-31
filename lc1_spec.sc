@@ -1,5 +1,5 @@
 import $file.lc1, lc1._
-import $file.lc0_spec, lc0_spec.{checkM,checkC}
+import $file.lc0_spec, lc0_spec.{checkC,checkE,checkM}
 import lc0._
 
 // Booleans
@@ -42,6 +42,9 @@ checkC(cPred(cOne), cZero, "pred(1) must be 0")
 checkC(cPred(cTwo), cOne, "pred(2) must be 1")
 checkC(cPred(cSix), cFive, "pred(6) must be 5")
 
+// subtraction
+checkC(cSub(cSix)(cTwo), cFour, "6-2 must be 4")
+
 // arithmetic inequalities
 
 val cIsZero = 'c -: 'c(bFalse)(bNot)(bFalse)
@@ -55,6 +58,18 @@ checkM(cIsGeq(cOne)(cZero), bTrue, "c1 >= c0")
 checkM(cIsGeq(cSix)(cZero), bTrue, "c6 >= c0")
 checkM(cIsGeq(cZero)(cSix), bFalse, "c0 < c6")
 checkM(cIsGeq(cSix)(cSix), bTrue, "c6 >= c6")
+
+// convert Church numerals to Int
+checkE(churchToInt(Var('x)), None, "x is not a Church numeral")
+checkE(churchToInt('x -: 'x), None, "x -> x is not a Church numeral")
+checkE(churchToInt('x -: 'y -: 'x), None, "x -> y -> x is not a Church numeral")
+checkE(churchToInt('x -: 'y -: 'y('x)), None, "x -> y -> y x is not a Church numeral")
+
+checkE(churchToInt(cZero), Some(0), "c0 => 0")
+checkE(churchToInt(cOne), Some(1), "c1 => 1")
+checkE(churchToInt(cOne), Some(1), "c1 => 1")
+checkE(churchToInt(cTwo), Some(2), "c2 => 2")
+checkE(churchToInt(cSix), Some(6), "c6 => 6")
 
 // sum type
 
