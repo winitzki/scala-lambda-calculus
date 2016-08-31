@@ -10,13 +10,24 @@ def checkA(a: Term, b: Term, m: String): Unit = assert(a === b, s"failed: $m: go
 
 // Deep equality up to multiple evaluations and alpha-conversions.
 def checkM(a: Term, b: Term, m: String): Unit = {
-	assert((a!!) === (b!!), s"failed: $m: got ${a!!} but expected ${b!!}")
+	val newA = a!!
+	val newB = (b!!)
+	assert(newA === newB, s"failed: $m: got $newA but expected $newB")
+}
+
+// Deep equality up to multiple evaluations and alpha-conversions and evaluation under lambda.
+def checkMD(a: Term, b: Term, m: String): Unit = {
+	val newA = a!!
+	val newB = (b!!)
+	assert(Term.compareTermsWithDeepEval(newA, newB), s"failed: $m: got ${newA} but expected ${newB}")
 }
 
 // Deep equality up to multiple evaluations on Church numbers.
 // To test equality Church numbers, we need to supply two arguments to each number, or else nothing is evaluated under lambdas.
 def checkC(a: Term, b: Term, m: String): Unit = {
-	assert((a('x)('y)!!) === (b('x)('y)!!), s"failed: $m: got ${a('x)('y)!!} but expected ${b('x)('y)!!}")
+	val newA = a('x)('y)!!
+	val newB = (b('x)('y)!!)
+	assert(newA === newB, s"failed: $m: got ${newA} but expected ${newB}")
 }
 
 // basic syntax

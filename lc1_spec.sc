@@ -1,5 +1,5 @@
 import $file.lc1, lc1._
-import $file.lc0_spec, lc0_spec.{checkC,checkE,checkM}
+import $file.lc0_spec, lc0_spec.{checkC,checkE,checkM,checkMD}
 import lc0._
 
 // Booleans
@@ -101,7 +101,7 @@ checkC(cSum(cThree), cSix, "sum from 0 to 3 = 6")
 checkC(cFact(cZero), cOne, "0! = 1")
 checkC(cFact(cOne), cOne, "1! = 1")
 // this is very slow!
-// checkC(cFact(cTwo), cTwo, "2! = 2")
+checkC(cFact(cTwo), cTwo, "2! = 2")
 
 // this is extremely slow!
 // checkC(cFact(cThree), cSix, "3! = 6")
@@ -137,3 +137,13 @@ val lLen = cY( 'r -: 'l -: lCase('l)(cZero)('h -: 't -: cSucc('r('t))) )
 checkC(lLen(list0), cZero, "length of empty list is 0")
 checkC(lLen(list3), cThree, "length of [1,1,1] is 3")
 
+// Recursive function: concatenate lists
+
+val lConcat = cY( 'r -: 'l1 -: 'l2 -: lCase('l1)('l2)('h-: 't -: lCons('h)('r('t)('l2))) )
+
+// need a deeper comparison for lists
+
+checkMD(lConcat(list0)(list3), list3, "[] ++ [1,1,1] = [1,1,1]")
+checkMD(lConcat(list1)(list0), list1, "[a] ++ [] = [a]")
+checkMD(lConcat(lCons('b)(lNil))(list1), list2, "[b] ++ [a] = [b,a]")
+checkMD(lConcat(list3)(list0), list3, "[1,1,1] ++ [] = [1,1,1]")

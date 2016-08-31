@@ -39,6 +39,22 @@ object Term {
 		case Var(x) => false // if it were the same variable, we would have picked that up with literal comparison
 	}
 
+	// compare terms and evaluate everything under lambda
+	def compareTermsWithDeepEval(a: Term, b: Term): Boolean = if (a==b) true else a match {
+		case Lam(x,e) => b match {
+			case Lam(y,f) => if (x==y) compareTermsWithDeepEval(e!!,f!!) else {
+				val z = newSymbol(fv(e) ++ fv(f))
+				compareTermsWithDeepEval(boundRename(a, x, z), boundRename(b, y, z))
+			}
+			case _ => false
+		}
+		case Ap(f,e) => b match {
+			case Ap(g,h) => compareTermsWithDeepEval(f!!, g!!) && compareTermsWithDeepEval(e!!, h!!)
+			case _ => false
+		}
+		case Var(x) => false // if it were the same variable, we would have picked that up with literal comparison
+	}
+
 	def fv(t: Term): Set[Symbol] = t match {
 		case Lam(x,e) => fv(e) - x
 		case Ap(f,e) => fv(f) ++ fv(e)
