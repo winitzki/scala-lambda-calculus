@@ -1,4 +1,7 @@
 # scala-lambda-calculus
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5e5c44392f684d9d9418728e28fe7b44)](https://www.codacy.com/app/winitzki/scala-lambda-calculus?utm_source=github.com&utm_medium=referral&utm_content=winitzki/scala-lambda-calculus&utm_campaign=badger)
+
 This is a simple untyped lambda calculus interpreter in Scala using Ammonite Shell.
 
 Use for pedagogical purposes only, because the code is not performance-optimized!
